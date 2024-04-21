@@ -1,5 +1,6 @@
 const express = require('express');
-const routesUsager = require('./src/routes/ListeTacheRoutes');
+const routesListeTache = require('./src/routes/ListeTacheRoutes');
+const routesUsager = require('./src/routes/utilisateurRoutes');
 const morgan = require('morgan');
 const fs = require('fs');
 const path = require('path');
@@ -17,7 +18,9 @@ const swaggerOptions ={
     customSiteTitle: "Demo API"
 }
 app.use(express.json());
-app.use('/api/projetFinale', routesUsager);
+app.use('/api/projetFinale', routesListeTache);
+app.use('/api/usager', routesUsager);
+
 
 const errorLogStream = fs.createWriteStream(path.join(__dirname, 'error.log'), { flags: 'a' });
 

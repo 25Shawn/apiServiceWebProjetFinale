@@ -1,8 +1,7 @@
-const e = require('express');
-const usager = require('../models/ListeTacheModels');
+const listeTache = require('../models/ListeTacheModels');
 
 exports.afficherListeTacheIncomplete = (req, res) => {
-    usager.RequeteafficherListeTacheIncomplete()
+    listeTache.RequeteafficherListeTacheIncomplete()
         .then((resultats) => {
             if (!resultats || resultats.length === 0) {
                 return res.status(404).json({ message: "Liste de tâche non trouvée." });
@@ -17,7 +16,7 @@ exports.afficherListeTacheIncomplete = (req, res) => {
 
 exports.afficherListeTacheComplete = (req, res) => {
 
-    usager.RequeteafficherListeTacheComplete(complete)
+    listeTache.RequeteafficherListeTacheComplete()
         
         .then((resultats) => {
             if (!resultats || resultats.length === 0) {
@@ -33,7 +32,7 @@ exports.afficherListeTacheComplete = (req, res) => {
 }
 
 exports.AfficherDetail = (req, res) => {
-    usager.RequeteAfficherDetail(req.params.id)
+    listeTache.RequeteAfficherDetail(req.params.id)
         .then((resultats) => {
             if (!resultats || resultats.length === 0) {
                 return res.status(404).json({ message: "Le détail d'une tâche n'est pas trouvé." });
@@ -49,7 +48,7 @@ exports.AfficherDetail = (req, res) => {
 
 
 exports.AjouterTache = (req, res) => {
-    usager.RequeteAjouterTache(req.body)
+    listeTache.RequeteAjouterTache(req.body)
         .then((resultats) => {
             if (!resultats || resultats.length === 0) {
                 return res.status(404).json({ message: "L'ajout d'une tâche n'est pas trouvé." });
@@ -62,7 +61,7 @@ exports.AjouterTache = (req, res) => {
 }
 
 exports.ModifierTache = (req, res) => {
-    usager.RequeteModifierTache(req.body)
+    listeTache.RequeteModifierTache(req.body)
         .then((resultats) => {
             if (!resultats || resultats.length === 0) {
                 return res.status(404).json({ message: "La modification de la tâche n'est pas trouvé." });
@@ -70,12 +69,13 @@ exports.ModifierTache = (req, res) => {
             return res.status(200).json(resultats);
         })
         .catch((erreur) => {
+
             return res.status(500).json({ message: "Une erreur est survenue lors du traitement de la modification d'une tâche." });
         });
 }
 
 exports.ModifierStatusTache = (req, res) => {
-    usager.RequeteModifierStatusTache(req.query)
+    listeTache.RequeteModifierStatusTache(req.query)
         .then((resultats) => {
             if (!resultats || resultats.length === 0) {
                 return res.status(404).json({ message: "La modification du status de la tâche n'est pas trouvé." });
@@ -88,7 +88,7 @@ exports.ModifierStatusTache = (req, res) => {
 }
 
 exports.SupprimerTache = (req, res) => {
-    usager.RequeteSupprimerTache(req.query)
+    listeTache.RequeteSupprimerTache(req.query)
         .then((resultats) => {
             if (!resultats || resultats.length === 0) {
                 return res.status(404).json({ message: "La supression de la tâche n'est pas trouvé." });
@@ -102,7 +102,7 @@ exports.SupprimerTache = (req, res) => {
 }
 
 exports.AjouterSousTache = (req, res) => {
-    usager.RequeteAjouterSousTache(req.body)
+    listeTache.RequeteAjouterSousTache(req.body)
         .then((resultats) => {
             if (!resultats || resultats.length === 0) {
                 return res.status(404).json({ message: "L'ajout d'une sous tâche n'est pas trouvé." });
@@ -115,7 +115,7 @@ exports.AjouterSousTache = (req, res) => {
 }
 
 exports.ModifierSousTache = (req, res) => {
-    usager.RequeteModifierSousTache(req.body)
+    listeTache.RequeteModifierSousTache(req.body)
         .then((resultats) => {
             if (!resultats || resultats.length === 0) {
                 return res.status(404).json({ message: "La modification d'une sous tâche n'est pas trouvé." });
@@ -128,7 +128,7 @@ exports.ModifierSousTache = (req, res) => {
 }
 
 exports.ModifierStatusSousTache = (req, res) => {
-    usager.RequeteModifierStatusSousTache(req.query)
+    listeTache.RequeteModifierStatusSousTache(req.query)
         .then((resultats) => {
             if (!resultats || resultats.length === 0) {
                 return res.status(404).json({ message: "La modification du status d'une sous tâche n'est pas trouvé." });
@@ -141,7 +141,7 @@ exports.ModifierStatusSousTache = (req, res) => {
 }
 
 exports.SupprimerSousTache = (req, res) => {
-    usager.RequeteSupprimerSousTache(req.query)
+    listeTache.RequeteSupprimerSousTache(req.query)
         .then((resultats) => {
             if (!resultats || resultats.length === 0) {
                 return res.status(404).json({ message: "Suppression d'une sous tâche n'est pas trouvé." });
@@ -153,28 +153,3 @@ exports.SupprimerSousTache = (req, res) => {
         });
 }
 
-exports.AjouterUtilisateur = (req, res) => {
-    usager.RequeteAjouterUtilisateur(req.body)
-        .then((resultats) => {
-            if (!resultats || resultats.length === 0) {
-                return res.status(404).json({ message: "L'ajout d'un utilisateur n'est pas trouvé." });
-            }
-            return res.status(200).json(resultats);
-        })
-        .catch((erreur) => {
-            return res.status(500).json({ message: "Une erreur est survenue lors du traitement de l'ajout d'un utilisateur." });
-        });
-}
-
-exports.AjouterCleApi = (req, res) => {
-    usager.RequeteAjouterCleApi(req.body)
-        .then((resultats) => {
-            if (!resultats || resultats.length === 0) {
-                return res.status(404).json({ message: "La demande d'une clé d'api n'est pas trouvable." });
-            }
-            return res.status(200).json(resultats);
-        })
-        .catch((erreur) => {
-            return res.status(500).json({ message: "Une erreur est survenue lors du traitement de l'ajout d'une clé d'api." });
-        });
-}

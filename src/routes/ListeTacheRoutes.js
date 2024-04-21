@@ -60,15 +60,4 @@ router.delete('/supprimerSousTache', authentification, (req,res) => {
     listeTache.SupprimerSousTache(req, res);
 });
 
-// ajouter un utilisateur
-router.post('/ajouterUtilisateur', (req,res) => {
-    listeTache.AjouterUtilisateur(req, res);
-});
-
-// ajouter une clé API
-router.put('/ajouterCleApi', (req,res) => {
-    listeTache.AjouterCleApi(req, res);
-});
-
-
 module.exports = router;
