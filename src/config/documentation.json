@@ -1,7 +1,1253 @@
 {
     "openapi": "3.1.0",
-    "info":{
-        "title": "Démo API",
-        "version": "1.0.0"
+    "info": {
+        "title": "Liste de Tâches API",
+        "summary": "Cette API permet de gérer une liste de tâches et ses sous-tâches.",
+        "description": "Cette API permet de gérer une liste de tâches et ses sous-tâches. Elle permet de créer, lire, mettre à jour et supprimer des tâches et des sous-tâches. Elle permet également de marquer une tâche comme terminée ou non terminée. Les tâches peuvent être affichées par statut (terminé ou non terminé). Elle permet également la gestion des utilisateurs et de leurs clés API.",
+        "contact": {
+            "name": "Shawn Dutil",
+            "url": "https://www.shawndutil.com/support",
+            "email": "shawndutil@icloud.com"
+        },
+        "version": "1.0.1"
+    },
+    "servers": [
+        {
+            "url": "",
+            "description": "Serveur en ligne"
+        },
+        {
+            "url": "http://127.0.0.1:3030",
+            "description": "Serveur de développement"
+        }
+    ],
+    "paths": {
+        "/api/projetFinale/afficherListeTache": {
+            "get": {
+                "description": "Affiche la liste des tâches incomplètes.",
+                "summary": "Affiche la liste des tâches incomplètes de l'usager.",
+                "security": [
+                    {
+                        "CleApiAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "La liste des tâches incomplètes a été récupérée avec succès.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Tache"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Non autorisé - L'usager n'est pas authentifié.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Non autorisé - L'usager n'est pas authentifié." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Non autorisé - Clé API invalide.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Non autorisé - Clé API invalide." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Aucune tâche incomplète n'a été trouvée.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Aucune tâche incomplète n'a été trouvée." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur lors de la récupération de la liste des tâches incomplètes.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Erreur interne du serveur lors de la récupération de la liste des tâches incomplètes." }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/projetFinale/afficherListeTache/complete": {
+            "get": {
+                "description":"Affiche la liste des tâches complètes.",
+                "summary": "Affiche la liste des tâches complètes de l'usager.",
+                "security": [
+                    {
+                        "CleApiAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "La liste des tâches complètes a été récupérée avec succès.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Tache"
+                                }
+                            }
+                        }
+                    },
+                    "400":{ 
+                        "description": "Non autorisé - L'usager n'est pas authentifié.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Non autorisé - L'usager n'est pas authentifié." }
+                                    }
+                                }
+                            } 
+                        }
+                    },
+                    "404": {
+                        "description": "Aucune tâche complète n'a été trouvée.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Aucune tâche complète n'a été trouvée." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+
+                    "500": {
+                        "description": "Erreur interne du serveur lors de la récupération de la liste des tâches complètes.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Erreur interne du serveur lors de la récupération de la liste des tâches complètes." }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/projetFinale/afficherDetail/{id}": {
+            "get": {
+                "description": "Affiche les détails d'une tâche spécifique.",
+                "summary": "Affiche les détails d'une tâche spécifique de l'usager.",
+                "security": [
+                    {
+                        "CleApiAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "L'identifiant de la tâche à afficher les détails."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Les détails de la tâche ont été récupérés avec succès.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/detail"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Non autorisé - L'usager n'est pas authentifié.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Non autorisé - L'usager n'est pas authentifié." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "La tâche spécifiée n'a pas été trouvée.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "La tâche spécifiée n'a pas été trouvée." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur lors de la récupération des détails de la tâche.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Erreur interne du serveur lors de la récupération des détails de la tâche." }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/projetFinale/ajouterTache": {
+            "post": {
+                "description": "Ajoute une nouvelle tâche à la liste de l'usager.",
+                "summary": "Ajoute une nouvelle tâche à la liste de l'usager.",
+                "security": [
+                    {
+                        "CleApiAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "titre": {
+                                        "type": "string",
+                                        "description": "Le titre de la tâche à ajouter."
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Description de la tâche à ajouter."
+                                    },
+                                    "date_debut": {
+                                        "type": "string",
+                                        "description": "Date de début de la tâche à ajouter."
+                                    },
+                                    "date_echeance": {
+                                        "type": "string",
+                                        "description": "Date d'échéance de la tâche à ajouter."
+                                    },
+                                    "complete": {
+                                        "type": "boolean",
+                                        "description": "Statut de la tâche à ajouter. True = terminée, False = non terminée."
+                                    }
+                                },
+                                "required": ["titre", "description", "date_debut", "date_echeance", "complete"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "La tâche a été ajoutée avec succès.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Tache"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Non autorisé - L'usager n'est pas authentifié.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                            "examples": {
+                                "erreurInterne": {
+                                    "value": { "message": "Non autorisé - L'usager n'est pas authentifié." }
+                                }
+                            }
+                        }
+                        }
+                    },
+                    "404":{
+                        "description": "La tâche spécifiée n'a pas été trouvée.",
+                        "content":{
+                            "application/json":{ 
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "La tâche spécifiée n'a pas été trouvée." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur lors de l'ajout de la tâche.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Erreur interne du serveur lors de l'ajout de la tâche." }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/projetFinale/modifierTache": {
+            "put": {
+                "description": "Modifie une tâche existante de l'usager.",
+                "summary": "Modifie une tâche existante de l'usager.",
+                "security": [
+                    {
+                        "CleApiAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "titre": {
+                                        "type": "string",
+                                        "description": "Le titre de la tâche à modifier."
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Description de la tâche à modifier."
+                                    },
+                                    "date_debut": {
+                                        "type": "string",
+                                        "description": "Date de début de la tâche à modifier."
+                                    },
+                                    "date_echeance": {
+                                        "type": "string",
+                                        "description": "Date d'échéance de la tâche à modifier."
+                                    },
+                                    "complete": {
+                                        "type": "boolean",
+                                        "description": "Statut de la tâche à modifier. True = terminée, False = non terminée."
+                                    },
+                                    "tache_id": {
+                                        "type": "integer",
+                                        "description": "L'identifiant de la tâche à modifier."
+                                    }
+                                },
+                                "required": ["titre", "description", "date_debut", "date_echeance", "complete", "tache_id"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "La tâche a été modifiée avec succès.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Tache"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "La tâche spécifiée n'a pas été trouvée.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "La tâche spécifiée n'a pas été trouvée." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur lors de la modification de la tâche.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Erreur interne du serveur lors de la modification de la tâche." }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/projetFinale/modifierSatutTache": {
+            "put": {
+                "description": "Modifie le statut d'une tâche de l'usager.",
+                "summary": "Modifie le statut d'une tâche de l'usager.",
+                "security": [
+                    {
+                        "CleApiAuth": []
+                    }
+                ],
+                "parameters":[
+                    
+                    {
+                        "name": "complete",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "description": "Le nouveau statut de la tâche. True = terminée, False = non terminée."
+                    },
+                    {
+                        "name": "tache_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "L'identifiant de la tâche à modifier le statut."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Le statut de la tâche a été modifié avec succès.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Le statut de la tâche a été modifié avec succès." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Non autorisé - L'usager n'est pas authentifié.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Non autorisé - L'usager n'est pas authentifié." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "La tâche spécifiée n'a pas été trouvée.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "La tâche spécifiée n'a pas été trouvée." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur lors de la modification du statut de la tâche.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Erreur interne du serveur lors de la modification du statut de la tâche." }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/projetFinale/supprimerTache": {
+            "delete": {
+                "description": "Supprime une tâche de l'usager.",
+                "summary": "Supprime une tâche de l'usager.",
+                "security": [
+                    {
+                        "CleApiAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "tache_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "L'identifiant de la tâche à supprimer."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "La tâche a été supprimée avec succès.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "La tâche a été supprimée avec succès." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Non autorisé - L'usager n'est pas authentifié.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Non autorisé - L'usager n'est pas authentifié." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "La tâche spécifiée n'a pas été trouvée.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "La tâche spécifiée n'a pas été trouvée." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur lors de la suppression de la tâche.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Erreur interne du serveur lors de la suppression de la tâche." }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/projetFinale/ajouterSousTache": {
+            "post": {
+                "description": "Ajoute une nouvelle sous-tâche à une tâche existante de l'usager.",
+                "summary": "Ajoute une nouvelle sous-tâche à une tâche existante de l'usager.",
+                "security": [
+                    {
+                        "CleApiAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "tache_id": {
+                                        "type": "integer",
+                                        "description": "L'identifiant de la tâche parente à laquelle ajouter la sous-tâche."
+                                    },
+                                    "titre": {
+                                        "type": "string",
+                                        "description": "Le titre de la sous-tâche à ajouter."
+                                    },
+                                    "complete": {
+                                        "type": "boolean",
+                                        "description": "Statut de la sous-tâche à ajouter. True = terminée, False = non terminée."
+                                    }
+                                },
+                                "required": ["tache_id", "titre", "complete"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "La sous-tâche a été ajoutée avec succès.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/SousTache"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Non autorisé - L'usager n'est pas authentifié.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Non autorisé - L'usager n'est pas authentifié." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "La tâche parente spécifiée n'a pas été trouvée.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "La tâche parente spécifiée n'a pas été trouvée." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur lors de l'ajout de la sous-tâche.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Erreur interne du serveur lors de l'ajout de la sous-tâche." }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/projetFinale/modifierSousTache": {
+            "put": {
+                "description": "Modifie une sous-tâche existante de l'usager.",
+                "summary": "Modifie une sous-tâche existante de l'usager.",
+                "security": [
+                    {
+                        "CleApiAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "titre": {
+                                        "type": "string",
+                                        "description": "Le titre de la sous-tâche à modifier."
+                                    },
+                                    "sous_tache_id": {
+                                        "type": "integer",
+                                        "description": "L'identifiant de la sous-tâche à modifier."
+                                    }
+                                },
+                                "required": ["titre", "sous_tache_id"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "La sous-tâche a été modifiée avec succès.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/SousTache"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Non autorisé - L'usager n'est pas authentifié.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Non autorisé - L'usager n'est pas authentifié." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "La sous-tâche spécifiée n'a pas été trouvée.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "La sous-tâche spécifiée n'a pas été trouvée." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur lors de la modification de la sous-tâche.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Erreur interne du serveur lors de la modification de la sous-tâche." }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/projetFinale/modifierSatutSousTache": {
+            "put": {
+                "description": "Modifie le statut d'une sous-tâche de l'usager.",
+                "summary": "Modifie le statut d'une sous-tâche de l'usager.",
+                "security": [
+                    {
+                        "CleApiAuth": []
+                    }
+                ],
+                "parameters":[
+                    {
+                        "name": "complete",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "description": "Le nouveau statut de la sous-tâche. True = terminée, False = non terminée."
+                    },
+                    {
+                        "name": "sous_tache_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "L'identifiant de la sous-tâche à modifier le statut."
+                    }],
+                "responses": {
+                    "200": {
+                        "description": "Le statut de la sous-tâche a été modifié avec succès.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/SousTache"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Non autorisé - L'usager n'est pas authentifié.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error",
+                                    "examples": {
+                                        "erreurInterne": {
+                                            "value": { "message": "Non autorisé - L'usager n'est pas authentifié." }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "La sous-tâche spécifiée n'a pas été trouvée.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "La sous-tâche spécifiée n'a pas été trouvée." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur lors de la modification du statut de la sous-tâche.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Erreur interne du serveur lors de la modification du statut de la sous-tâche." }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/projetFinale/supprimerSousTache": {
+            "delete": {
+                "description": "Supprime une sous-tâche de l'usager.",
+                "summary": "Supprime une sous-tâche de l'usager.",
+                "security": [
+                    {
+                        "CleApiAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "sous_tache_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "L'identifiant de la sous-tâche à supprimer."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "La sous-tâche a été supprimée avec succès.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "La sous-tâche a été supprimée avec succès." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Non autorisé - L'usager n'est pas authentifié.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Non autorisé - L'usager n'est pas authentifié." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "La sous-tâche spécifiée n'a pas été trouvée.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "La sous-tâche spécifiée n'a pas été trouvée." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur lors de la suppression de la sous-tâche.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Erreur interne du serveur lors de la suppression de la sous-tâche." }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/usager/ajouterUtilisateur": {
+            "post": {
+                "summary": "Ajoute un nouvel utilisateur à la base de données avec un mot de passe sécurisé.",
+                "description": "Ajoute un nouvel utilisateur à la base de données avec un mot de passe sécurisé.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nom": {
+                                        "type": "string",
+                                        "description": "Le nom de l'utilisateur à ajouter."
+                                    },
+                                    "prenom": {
+                                        "type": "string",
+                                        "description": "Le prénom de l'utilisateur à ajouter."
+                                    },
+                                    "courriel": {
+                                        "type": "string",
+                                        "description": "L'adresse e-mail de l'utilisateur à ajouter."
+                                    },
+                                    "mot_de_passe": {
+                                        "type": "string",
+                                        "description": "Le mot de passe de l'utilisateur à ajouter."
+                                    }
+                                },
+                                "required": ["nom", "prenom", "courriel", "mot_de_passe"]
+                            }
+                        }
+                    }
+                },                
+                "responses": {
+                    "200": {
+                        "description": "L'utilisateur a été ajouté avec succès. Renvoie un objet contenant le nom, le prénom, l'adresse e-mail et la clé API de l'utilisateur ajouté.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Utilisateur"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erreur de syntaxe dans la requête.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Utilisateur"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Erreur de syntaxe dans la requête." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur lors de l'ajout de l'utilisateur.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Une erreur interne est survenue lors de l'ajout de l'utilisateur. Veuillez réessayer ultérieurement." }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+       "/api/usager/demandeCleApi": {
+            "put": {
+                "summary": "Ajoute une clé API à un utilisateur existant après vérification du mot de passe.",
+                "description": "Ajoute une clé API à un utilisateur existant après vérification du mot de passe.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "courriel": {
+                                        "type": "string",
+                                        "description": "L'adresse e-mail de l'utilisateur auquel ajouter la clé API."
+                                    },
+                                    "mot_de_passe": {
+                                        "type": "string",
+                                        "description": "Le mot de passe de l'utilisateur pour vérification."
+                                    }
+                                },
+                                "required": ["courriel", "mot_de_passe"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "La clé API a été ajoutée avec succès à l'utilisateur spécifié. Renvoie un objet contenant l'adresse e-mail de l'utilisateur et sa nouvelle clé API.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "nom": "Doe", "prenom":"John","courriel":"johnDoe@exemple.ca","cle_api":"f5e8d1a2-4c1b-4bfb-bab1-8b6a13567c89" }
+                                    }
+                                }
+
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erreur de syntaxe dans la requête ou mot de passe incorrect.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Erreur de syntaxe dans la requête ou mot de passe incorrect." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "L'utilisateur spécifié n'a pas été trouvé dans la base de données.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "L'utilisateur spécifié n'a pas été trouvé dans la base de données." }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur lors de l'ajout de la clé API.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "message": "Une erreur interne est survenue lors de l'ajout de l'utilisateur. Veuillez réessayer ultérieurement." }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } ,
+    "components": {
+        "securitySchemes": {
+            "CleApiAuth": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "Authorization"
+            }
+        },
+        "schemas": {
+            "Error": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Utilisateur": {
+                "type": "object",
+                "properties": {
+                    "nom": {
+                        "type": "string",
+                        "example": "Doe"
+                    },
+                    "prenom": {
+                        "type": "string",
+                        "example": "John"
+                    },
+                    "courriel": {
+                        "type": "string",
+                        "example": "johnDoe@exemple.com"
+                    },
+                    "cle_api": {
+                        "type": "string",
+                        "example": "f5e8d1a2-4c1b-4bfb-bab1-8b6a13567c89"
+                    }
+                }
+            },
+            "Tache": {
+                "type": "object",
+                "properties": {
+                    "titre": {
+                        "type": "string",
+                        "example": "Faire les courses"
+
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Acheter du lait, des oeufs et du pain."
+                    },
+                    "date_debut": {
+                        "type": "Date",
+                        "example": "2022-12-31"
+                    },
+                    "date_echeance": {
+                        "type": "Date",
+                        "example": "2022-12-31"
+                    },
+                    "complete": {
+                        "type": "boolean",
+                        "example": "false"
+                    }
+                }
+            },
+            "SousTache": {
+                "type": "object",
+                "properties": {
+                    "titre": {
+                        "type": "string",
+                        "example": "Acheter du lait"
+                    },
+                    "complete": {
+                        "type": "boolean",
+                        "example": "false"
+                    }
+                }
+            },
+            "detail":{
+                "type":"object",
+                "properties":{
+                    "titre":{
+                        "type":"string",
+                        "example":"Faire les courses"
+                    },
+                    "description":{
+                        "type":"string",
+                        "example":"Acheter du lait, des oeufs et du pain."
+                    },
+                    "date_debut":{
+                        "type":"Date",
+                        "example":"2022-12-31"
+                    },
+                    "date_echeance":{
+                        "type":"Date",
+                        "example":"2022-12-31"
+                    },
+                    "sous_taches":{
+                        "type":"array",
+                        "items":{
+                            "$ref":"#/components/schemas/SousTache"
+                        }
+                    }
+                }
+            }
+        }
     }
+
 }

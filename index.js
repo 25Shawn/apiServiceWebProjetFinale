@@ -17,6 +17,7 @@ const swaggerOptions ={
     customCss: '.swagger-ui .topbar { display: none }',
     customSiteTitle: "Demo API"
 }
+app.use(cors());
 app.use(express.json());
 app.use('/api/projetFinale', routesListeTache);
 app.use('/api/usager', routesUsager);
@@ -29,7 +30,7 @@ app.use(morgan('combined', {
   skip: (req, res) => res.statusCode < 500
 }));
 
-app.use(cors());
+
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOptions));
 
 const port = 3030;
@@ -37,3 +38,4 @@ const port = 3030;
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+
