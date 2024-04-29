@@ -1,12 +1,19 @@
 const usager = require('../models/utilisateurModels');
 
 exports.AjouterUtilisateur = (req, res) => {
-    usager.RequeteAjouterUtilisateur(req.body)
-        .then((resultats) => {
-            if (!resultats || resultats.length === 0) {
-                return res.status(404).json({ message: "L'ajout d'un utilisateur n'est pas trouvé." });
+
+    usager.VerifierCourrielUnique(req.body.courriel)
+        .then((resultat) => {
+            if (!resultat) {
+                return res.status(400).json({ message: "Le courriel est déjà utilisé." });
             }
-            return res.status(200).json(resultats);
+            usager.RequeteAjouterUtilisateur(req.body)
+                .then((resultats) => {
+                    if (!resultats || resultats.length === 0) {
+                        return res.status(404).json({ message: "L'ajout d'un utilisateur n'est pas trouvé." });
+                    }
+                    return res.status(200).json(resultats);
+                })
         })
         .catch((erreur) => {
             if (erreur instanceof SyntaxError) {
