@@ -17,7 +17,7 @@ class ListeTachesUsager{
                     console.log(erreur);
                     reject(erreur);
                 } else {
-                    console.log(resultats.rows);
+                    
                     resolve(resultats.rows);
                 }
             });
@@ -78,7 +78,8 @@ class ListeTachesUsager{
                     console.log(erreur);
                     reject(erreur);
                 } else {
-                    resolve(resultats);
+                    let reponse = {titre: resultats.titre, description: resultats.description, date_debut: resultats.date_debut, date_echeance: resultats.date_echeance, complete: resultats.complete};
+                    resolve(reponse);
                 }
             });
         });
@@ -98,7 +99,8 @@ class ListeTachesUsager{
                     console.log(erreur);
                     reject(erreur);
                 } else {
-                    resolve(resultats);
+                    let reponse = {titre: resultats.titre, description: resultats.description, date_debut: resultats.date_debut, date_echeance: resultats.date_echeance};
+                    resolve(reponse);
                 }
             });
         });
@@ -118,6 +120,7 @@ class ListeTachesUsager{
                     console.log(erreur);
                     reject(erreur);
                 } else {
+                    let reponse = {complete: resultats.complete};
                     resolve(resultats);
                 }
             });
@@ -154,7 +157,8 @@ class ListeTachesUsager{
                     console.log(erreur);
                     reject(erreur);
                 } else {
-                    resolve(resultats);
+                    let reponse = {titre: resultats.titre, complete: resultats.complete};
+                    resolve(reponse);
                 }
             });
         });
@@ -169,7 +173,8 @@ class ListeTachesUsager{
                     console.log(erreur);
                     reject(erreur);
                 } else {
-                    resolve(resultats);
+                    let reponse = {titre: resultats.titre};
+                    resolve(reponse);
                 }
             });
         });
@@ -185,7 +190,8 @@ class ListeTachesUsager{
                     console.log(erreur);
                     reject(erreur);
                 } else {
-                    resolve(resultats);
+                    let reponse = {complete: resultats.complete};
+                    resolve(reponse);
                 }
             });
         });
@@ -213,7 +219,6 @@ class ListeTachesUsager{
             let params = [cleApi];
             postgres.query(requete, params, (erreur, resultats) => {
                 if (erreur) {
-                    console.log(erreur);
                     reject(erreur);
                 } else {
                     if (resultats.rows.length === 0) {
