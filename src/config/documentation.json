@@ -13,7 +13,7 @@
     },
     "servers": [
         {
-            "url": "",
+            "url": "https://apiservicewebprojetfinale.onrender.com",
             "description": "Serveur en ligne"
         },
         {
@@ -386,10 +386,6 @@
                                         "type": "string",
                                         "description": "Date d'échéance de la tâche à modifier."
                                     },
-                                    "complete": {
-                                        "type": "boolean",
-                                        "description": "Statut de la tâche à modifier. True = terminée, False = non terminée."
-                                    },
                                     "tache_id": {
                                         "type": "integer",
                                         "description": "L'identifiant de la tâche à modifier."
@@ -480,12 +476,7 @@
                         "content":{
                             "application/json":{
                                 "schema":{
-                                    "$ref":"#/components/schemas/Error"
-                                },
-                                "examples": {
-                                    "erreurInterne": {
-                                        "value": { "message": "Le statut de la tâche a été modifié avec succès." }
-                                    }
+                                    "$ref":"#/components/schemas/Tache"
                                 }
                             }
                         }
