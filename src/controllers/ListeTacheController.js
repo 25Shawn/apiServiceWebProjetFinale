@@ -146,13 +146,13 @@ exports.AjouterSousTache = (req, res) => {
             }
 
             let params = [tache_id, req.body.titre, req.body.complete];
-            return listeTache.RequeteAjouterSousTache(params);
-        })
-        .then((resultats) => {
-            if (!resultats || resultats.length === 0) {
-                return res.status(404).json({ message: "L'ajout d'une sous-tâche n'a pas été trouvé." });
-            }
-            return res.status(200).json({ message: "La sous-tâche a été ajoutée avec succès." });
+            listeTache.RequeteAjouterSousTache(params)
+            .then((resultats) => {
+                if (!resultats || resultats.length === 0) {
+                    return res.status(404).json({ message: "L'ajout d'une sous-tâche n'a pas été trouvé." });
+                }
+                return res.status(200).json({ message: "La sous-tâche a été ajoutée avec succès." });
+            })
         })
         .catch((erreur) => {
 
@@ -175,26 +175,26 @@ exports.ModifierSousTache = (req, res) => {
                 return res.status(404).json({ message: "La sous-tâche spécifiée n'existe pas." });
             }
 
-            return listeTache.VerifierUtilisateurTache(tache_id);
-        })
-        .then((utilisateurBool) => {
+            listeTache.VerifierUtilisateurTache(tache_id)
+            .then((utilisateurBool) => {
 
-            if (!utilisateurBool) {
+                if (!utilisateurBool) {
+    
+                    return res.status(403).json({ message: "La tâche n'a pas d'utilisateur associé." });
+                }
+    
+                let params = [req.body.titre, sous_tache_id];
+    
+                listeTache.RequeteModifierSousTache(params)
+                .then((resultats) => {
 
-                return res.status(403).json({ message: "La tâche n'a pas d'utilisateur associé." });
-            }
-
-            let params = [req.body.titre, sous_tache_id];
-
-            return listeTache.RequeteModifierSousTache(params);
-        })
-        .then((resultats) => {
-
-            if (!resultats || resultats.length === 0) {
-
-                return res.status(404).json({ message: "La modification d'une sous tâche n'est pas trouvé." });
-            }
-            return res.status(200).json({ message: "La sous tâche a été modifiée avec succès."});
+                    if (!resultats || resultats.length === 0) {
+        
+                        return res.status(404).json({ message: "La modification d'une sous tâche n'est pas trouvé." });
+                    }
+                    return res.status(200).json({ message: "La sous tâche a été modifiée avec succès."});
+                })
+            })
         })
         .catch((erreur) => {
             if (erreur instanceof SyntaxError) {
@@ -216,21 +216,21 @@ exports.ModifierStatusSousTache = (req, res) => {
                 return res.status(404).json({ message: "La sous-tâche spécifiée n'existe pas." });
             }
 
-            return listeTache.VerifierUtilisateurTache(tache_id);
-        })
-        .then((utilisateurBool) => {
-            if (!utilisateurBool) {
-                return res.status(403).json({ message: "La tâche n'a pas d'utilisateur associé." });
-            }
-
-            let params = [req.query.complete, sous_tache_id];
-            return listeTache.RequeteModifierStatusSousTache(params);
-        })
-        .then((resultats) => {
-            if (!resultats || resultats.length === 0) {
-                return res.status(404).json({ message: "La modification du status d'une sous tâche n'est pas trouvé." });
-            }
-            return res.status(200).json({ message: "Le status de la sous tâche a été modifié avec succès."});
+            listeTache.VerifierUtilisateurTache(tache_id)
+            .then((utilisateurBool) => {
+                if (!utilisateurBool) {
+                    return res.status(403).json({ message: "La tâche n'a pas d'utilisateur associé." });
+                }
+    
+                let params = [req.query.complete, sous_tache_id];
+                listeTache.RequeteModifierStatusSousTache(params)
+                .then((resultats) => {
+                    if (!resultats || resultats.length === 0) {
+                        return res.status(404).json({ message: "La modification du status d'une sous tâche n'est pas trouvé." });
+                    }
+                    return res.status(200).json({ message: "Le status de la sous tâche a été modifié avec succès."});
+                })
+            })
         })
         .catch((erreur) => {
             if (erreur instanceof SyntaxError) {
@@ -253,21 +253,21 @@ exports.SupprimerSousTache = (req, res) => {
                 return res.status(404).json({ message: "La sous-tâche spécifiée n'existe pas." });
             }
 
-            return listeTache.VerifierUtilisateurTache(tache_id);
-        })
-        .then((utilisateurBool) => {
-            if (!utilisateurBool) {
-                return res.status(403).json({ message: "La tâche n'a pas d'utilisateur associé." });
-            }
-
-            let params = [sous_tache_id];
-            return listeTache.RequeteSupprimerSousTache(params);
-        })
-        .then((resultats) => {
-            if (!resultats || resultats.length === 0) {
-                return res.status(404).json({ message: "Suppression d'une sous tâche n'est pas trouvé." });
-            }
-            return res.status(200).json({ message: "La sous tâche a été supprimée avec succès."});
+            listeTache.VerifierUtilisateurTache(tache_id)
+            .then((utilisateurBool) => {
+                if (!utilisateurBool) {
+                    return res.status(403).json({ message: "La tâche n'a pas d'utilisateur associé." });
+                }
+    
+                let params = [sous_tache_id];
+                listeTache.RequeteSupprimerSousTache(params)
+                .then((resultats) => {
+                    if (!resultats || resultats.length === 0) {
+                        return res.status(404).json({ message: "Suppression d'une sous tâche n'est pas trouvé." });
+                    }
+                    return res.status(200).json({ message: "La sous tâche a été supprimée avec succès."});
+                })
+            })
         })
         .catch((erreur) => {
             if (erreur instanceof SyntaxError) {
