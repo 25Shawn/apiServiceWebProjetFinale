@@ -30,7 +30,7 @@ class ListeTachesUsager{
 
         return new Promise((resolve, reject) => {
 
-            let requete = "SELECT tache_id, titre, description, date_debut,date_echeance,complete,utilisateur_id FROM taches WHERE utilisateur_id = $1 AND complete = true";
+            let requete = "SELEC tache_id, titre, description, date_debut,date_echeance,complete,utilisateur_id FROM taches WHERE utilisateur_id = $1";
             postgres.query(requete,[utilisateur_id], (erreur, resultats) => {
                 if (erreur) {
                     console.log(erreur);

@@ -1,0 +1,1 @@
+::ffff:127.0.0.1 - - [28/Apr/2024:23:49:25 +0000] "GET /api/projetFinale/afficherListeTache/complete HTTP/1.1" 500 80 "-" "PostmanRuntime/7.37.3"
