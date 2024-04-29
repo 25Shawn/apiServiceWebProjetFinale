@@ -68,7 +68,7 @@ exports.AjouterTache = (req, res) => {
             if (!resultats || resultats.length === 0) {
                 return res.status(404).json({ message: "L'ajout d'une tâche n'est pas trouvé." });
             }
-            return res.status(200).json({ message: "La tâche a été ajoutée avec succès."});
+            return res.status(200).json({resultats});
         })
         .catch((erreur) => {
             if (erreur instanceof SyntaxError) {
@@ -86,7 +86,7 @@ exports.ModifierTache = (req, res) => {
             if (!resultats || resultats.length === 0) {
                 return res.status(404).json({ message: "La modification de la tâche n'est pas trouvé." });
             }
-            return res.status(200).json({ message: "La tâche a été modifiée avec succès."});
+            return res.status(200).json(resultats);
         })
         .catch((erreur) => {
             if (erreur instanceof SyntaxError) {
@@ -104,7 +104,7 @@ exports.ModifierStatusTache = (req, res) => {
             if (!resultats || resultats.length === 0) {
                 return res.status(404).json({ message: "La modification du status de la tâche n'est pas trouvé." });
             }
-            return res.status(200).json({ message: "Le status de la tâche a été modifié avec succès."});
+            return res.status(200).json(resultats);
         })
         .catch((erreur) => {
             if (erreur instanceof SyntaxError) {
@@ -151,7 +151,7 @@ exports.AjouterSousTache = (req, res) => {
                 if (!resultats || resultats.length === 0) {
                     return res.status(404).json({ message: "L'ajout d'une sous-tâche n'a pas été trouvé." });
                 }
-                return res.status(200).json({ message: "La sous-tâche a été ajoutée avec succès." });
+                return res.status(200).json(resultats);
             })
         })
         .catch((erreur) => {
@@ -192,7 +192,7 @@ exports.ModifierSousTache = (req, res) => {
         
                         return res.status(404).json({ message: "La modification d'une sous tâche n'est pas trouvé." });
                     }
-                    return res.status(200).json({ message: "La sous tâche a été modifiée avec succès."});
+                    return res.status(200).json(resultats);
                 })
             })
         })
@@ -228,7 +228,7 @@ exports.ModifierStatusSousTache = (req, res) => {
                     if (!resultats || resultats.length === 0) {
                         return res.status(404).json({ message: "La modification du status d'une sous tâche n'est pas trouvé." });
                     }
-                    return res.status(200).json({ message: "Le status de la sous tâche a été modifié avec succès."});
+                    return res.status(200).json(resultats);
                 })
             })
         })
