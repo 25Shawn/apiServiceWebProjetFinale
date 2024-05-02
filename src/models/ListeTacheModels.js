@@ -69,7 +69,7 @@ class ListeTachesUsager{
         const utilisateur_id = await ListeTachesUsager.ObtenirIdentifiantUsager(cleApi);
 
         return new Promise((resolve, reject) => {
-            let requete = "INSERT INTO taches (titre, description, date_debut, date_echeance, complete, utilisateur_id) VALUES ($1, $2, $3, $4, $5, $6)";
+            let requete = "INSERT INTO taches (titre, description, date_debut, date_echeance, complete, utilisateur_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING titre, description, date_debut, date_echeance, complete";
 
             let params = [tache.titre, tache.description, tache.date_debut, tache.date_echeance, tache.complete, utilisateur_id];
 
@@ -90,7 +90,7 @@ class ListeTachesUsager{
         const utilisateur_id = await ListeTachesUsager.ObtenirIdentifiantUsager(cleApi);
 
         return new Promise((resolve, reject) => {
-            let requete = "UPDATE taches SET titre = $1, description = $2, date_debut = $3, date_echeance = $4 WHERE tache_id = $5 AND utilisateur_id = $6";
+            let requete = "UPDATE taches SET titre = $1, description = $2, date_debut = $3, date_echeance = $4 WHERE tache_id = $5 AND utilisateur_id = $6 RETURNING titre, description, date_debut, date_echeance";
 
             let params = [tache.titre, tache.description, tache.date_debut, tache.date_echeance, tache.tache_id, utilisateur_id];
 
@@ -111,7 +111,7 @@ class ListeTachesUsager{
         const utilisateur_id = await ListeTachesUsager.ObtenirIdentifiantUsager(cleApi);
 
         return new Promise((resolve, reject) => {
-            let requete = "UPDATE taches SET complete = $1 WHERE tache_id = $2 AND utilisateur_id = $3";
+            let requete = "UPDATE taches SET complete = $1 WHERE tache_id = $2 AND utilisateur_id = $3 RETURNING complete";
 
             let params = [tache.complete, tache.tache_id, utilisateur_id];
 
@@ -150,14 +150,18 @@ class ListeTachesUsager{
     static RequeteAjouterSousTache(sousTache) {
 
         return new Promise((resolve, reject) => {
-            let requete = "INSERT INTO sous_taches (tache_id, titre, complete) VALUES ($1, $2, $3)";
+            let requete = "INSERT INTO sous_taches (tache_id, titre, complete) VALUES ($1, $2, $3) RETURNING tache_id, titre, complete";
 
             postgres.query(requete, sousTache, (erreur, resultats) => {
                 if (erreur) {
                     console.log(erreur);
                     reject(erreur);
                 } else {
-                    let reponse = {titre: resultats.titre, complete: resultats.complete};
+                    let reponse = {
+                        tache_id: resultats.rows[0].tache_id,
+                        titre: resultats.rows[0].titre,
+                        complete: resultats.rows[0].complete
+                    };
                     resolve(reponse);
                 }
             });
@@ -166,7 +170,7 @@ class ListeTachesUsager{
 
     static RequeteModifierSousTache(sousTache) {
         return new Promise((resolve, reject) => {
-            let requete = "UPDATE sous_taches SET titre = $1 WHERE sous_tache_id = $2";
+            let requete = "UPDATE sous_taches SET titre = $1 WHERE sous_tache_id = $2 RETURNING titre";
             console.log(sousTache);
             postgres.query(requete, sousTache, (erreur, resultats) => {
                 if (erreur) {
@@ -182,7 +186,7 @@ class ListeTachesUsager{
 
     static RequeteModifierStatusSousTache(sousTache) {
         return new Promise((resolve, reject) => {
-            let requete = "UPDATE sous_taches SET complete = $1 WHERE sous_tache_id = $2";
+            let requete = "UPDATE sous_taches SET complete = $1 WHERE sous_tache_id = $2 RETURNING complete";
 
 
             postgres.query(requete, sousTache, (erreur, resultats) => {
