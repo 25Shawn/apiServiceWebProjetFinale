@@ -4,9 +4,10 @@ exports.AjouterUtilisateur = (req, res) => {
 
     usager.VerifierCourrielUnique(req.body.courriel)
         .then((resultat) => {
-            if (!resultat) {
+            if (resultat) {
                 return res.status(400).json({ message: "Le courriel est déjà utilisé." });
             }
+            else {
             usager.RequeteAjouterUtilisateur(req.body)
                 .then((resultats) => {
                     if (!resultats || resultats.length === 0) {
@@ -14,6 +15,7 @@ exports.AjouterUtilisateur = (req, res) => {
                     }
                     return res.status(200).json(resultats);
                 })
+            }
         })
         .catch((erreur) => {
             if (erreur instanceof SyntaxError) {
