@@ -78,7 +78,7 @@ class ListeTachesUsager{
                     console.log(erreur);
                     reject(erreur);
                 } else {
-                    let reponse = {titre: resultats.titre, description: resultats.description, date_debut: resultats.date_debut, date_echeance: resultats.date_echeance, complete: resultats.complete};
+                    let reponse = {titre: resultats.rows[0].titre, description: resultats.rows[0].description, date_debut: resultats.rows[0].date_debut, date_echeance: resultats.rows[0].date_echeance, complete: resultats.rows[0].complete};
                     resolve(reponse);
                 }
             });
@@ -99,7 +99,7 @@ class ListeTachesUsager{
                     console.log(erreur);
                     reject(erreur);
                 } else {
-                    let reponse = {titre: resultats.titre, description: resultats.description, date_debut: resultats.date_debut, date_echeance: resultats.date_echeance};
+                    let reponse = {titre: resultats.rows[0].titre, description: resultats.rows[0].description, date_debut: resultats.rows[0].date_debut, date_echeance: resultats.rows[0].date_echeance};
                     resolve(reponse);
                 }
             });
@@ -120,7 +120,7 @@ class ListeTachesUsager{
                     console.log(erreur);
                     reject(erreur);
                 } else {
-                    let reponse = {complete: resultats.complete};
+                    let reponse = {complete: resultats.rows[0].complete};
                     resolve(resultats);
                 }
             });
@@ -177,7 +177,7 @@ class ListeTachesUsager{
                     console.log(erreur);
                     reject(erreur);
                 } else {
-                    let reponse = {titre: resultats.titre};
+                    let reponse = {titre: resultats.rows[0].titre};
                     resolve(reponse);
                 }
             });
@@ -194,7 +194,7 @@ class ListeTachesUsager{
                     console.log(erreur);
                     reject(erreur);
                 } else {
-                    let reponse = {complete: resultats.complete};
+                    let reponse = {complete: resultats.rows[0].complete};
                     resolve(reponse);
                 }
             });
