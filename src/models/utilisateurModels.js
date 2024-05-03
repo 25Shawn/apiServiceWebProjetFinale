@@ -92,6 +92,21 @@ class utilisateur {
             });
         });
     }
+
+    static VerifierCourrielUnique(courriel) {
+        return new Promise((resolve, reject) => {
+            let requete = "SELECT COUNT(*) FROM utilisateur WHERE courriel = $1";
+
+            postgres.query(requete, [courriel], (erreur, resultat) => {
+                if (erreur) {
+                    reject(erreur);
+                } else {
+                    const count = (resultat.rows[0].count);
+                    resolve(count === 0);
+                }
+            });
+        });
+    }
 }
 
 module.exports = utilisateur;
