@@ -68,7 +68,7 @@ exports.AjouterTache = (req, res) => {
             if (!resultats || resultats.length === 0) {
                 return res.status(404).json({ message: "L'ajout d'une tâche n'est pas trouvé." });
             }
-            return res.status(200).json({resultats});
+            return res.status(200).json(resultats);
         })
         .catch((erreur) => {
             if (erreur instanceof SyntaxError) {
