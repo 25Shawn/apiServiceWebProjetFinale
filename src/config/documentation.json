@@ -402,7 +402,14 @@
                         "content":{
                             "application/json":{
                                 "schema":{
-                                    "$ref":"#/components/schemas/Tache"
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "titre": "Faire les courses", "description":"Acheter du lait, des oeufs et du pain.","date_debut":"2022-12-31","date_echeance":"2022-12-31" }
+                                        
+                                    }
+                                    
                                 }
                             }
                         }
@@ -476,8 +483,15 @@
                         "content":{
                             "application/json":{
                                 "schema":{
-                                    "$ref":"#/components/schemas/Tache"
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "tache_id": 20,"complete": "true"}
+                                    }
+                                    
                                 }
+
                             }
                         }
                     },
@@ -742,7 +756,12 @@
                         "content":{
                             "application/json":{
                                 "schema":{
-                                    "$ref":"#/components/schemas/SousTache"
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "sous_tache_id": 30,"titre": "Acheter du lait, des oeufs et du pain" }
+                                    }
                                 }
                             }
                         }
@@ -829,7 +848,13 @@
                         "content":{
                             "application/json":{
                                 "schema":{
-                                    "$ref":"#/components/schemas/SousTache"
+                                    "$ref":"#/components/schemas/Error"
+                                },
+                                "examples": {
+                                    "erreurInterne": {
+                                        "value": { "sous_tache_id": 30,"complete": "true"}
+                                    }
+                                    
                                 }
                             }
                         }
@@ -1078,7 +1103,7 @@
                                 },
                                 "examples": {
                                     "erreurInterne": {
-                                        "value": { "nom": "Doe", "prenom":"John","courriel":"johnDoe@exemple.ca","cle_api":"f5e8d1a2-4c1b-4bfb-bab1-8b6a13567c89" }
+                                        "value": { "courriel":"johnDoe@exemple.ca","cle_api":"f5e8d1a2-4c1b-4bfb-bab1-8b6a13567c89" }
                                     }
                                 }
 
@@ -1178,7 +1203,6 @@
                     "titre": {
                         "type": "string",
                         "example": "Faire les courses"
-
                     },
                     "description": {
                         "type": "string",
@@ -1201,6 +1225,10 @@
             "SousTache": {
                 "type": "object",
                 "properties": {
+                    "tache_id":{ 
+                        "type": "integer",
+                        "example": "1"
+                    },
                     "titre": {
                         "type": "string",
                         "example": "Acheter du lait"
