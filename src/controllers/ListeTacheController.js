@@ -1,6 +1,6 @@
 const { compare } = require('bcrypt');
 const postgres = require('../config/db');
-const utilisateur = require('./utilisateurModels');
+//const utilisateur = require('./utilisateurModels');
 
 
 class ListeTachesUsager{
