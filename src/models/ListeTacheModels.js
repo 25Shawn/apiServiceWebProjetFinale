@@ -1,6 +1,6 @@
 const { compare } = require('bcrypt');
 const postgres = require('../config/db');
-const utilisateur = require('./utilisateurModels');
+//const utilisateur = require('./utilisateurModels');
 
 
 class ListeTachesUsager{
@@ -111,7 +111,7 @@ class ListeTachesUsager{
         const utilisateur_id = await ListeTachesUsager.ObtenirIdentifiantUsager(cleApi);
 
         return new Promise((resolve, reject) => {
-            let requete = "UPDATE taches SET complete = $1 WHERE tache_id = $2 AND utilisateur_id = $3 RETURNING complete";
+            let requete = "UPDATE taches SET complete = $1 WHERE tache_id = $2 AND utilisateur_id = $3 RETURNING complete, tache_id";
 
             let params = [tache.complete, tache.tache_id, utilisateur_id];
 
@@ -120,8 +120,8 @@ class ListeTachesUsager{
                     console.log(erreur);
                     reject(erreur);
                 } else {
-                    let reponse = {complete: resultats.rows[0].complete};
-                    resolve(resultats);
+                    let reponse = {tache_id: resultats.rows[0].tache_id, complete: resultats.rows[0].complete};
+                    resolve(reponse);
                 }
             });
         });
@@ -170,14 +170,14 @@ class ListeTachesUsager{
 
     static RequeteModifierSousTache(sousTache) {
         return new Promise((resolve, reject) => {
-            let requete = "UPDATE sous_taches SET titre = $1 WHERE sous_tache_id = $2 RETURNING titre";
+            let requete = "UPDATE sous_taches SET titre = $1 WHERE sous_tache_id = $2 RETURNING titre, sous_tache_id";
             console.log(sousTache);
             postgres.query(requete, sousTache, (erreur, resultats) => {
                 if (erreur) {
                     console.log(erreur);
                     reject(erreur);
                 } else {
-                    let reponse = {titre: resultats.rows[0].titre};
+                    let reponse = {sous_tache_id: resultats.rows[0].sous_tache_id, titre: resultats.rows[0].titre};
                     resolve(reponse);
                 }
             });
@@ -186,7 +186,7 @@ class ListeTachesUsager{
 
     static RequeteModifierStatusSousTache(sousTache) {
         return new Promise((resolve, reject) => {
-            let requete = "UPDATE sous_taches SET complete = $1 WHERE sous_tache_id = $2 RETURNING complete";
+            let requete = "UPDATE sous_taches SET complete = $1 WHERE sous_tache_id = $2 RETURNING complete,sous_tache_id";
 
 
             postgres.query(requete, sousTache, (erreur, resultats) => {
@@ -194,7 +194,7 @@ class ListeTachesUsager{
                     console.log(erreur);
                     reject(erreur);
                 } else {
-                    let reponse = {complete: resultats.rows[0].complete};
+                    let reponse = {sous_tache_id: resultats.rows[0].sous_tache_id,complete: resultats.rows[0].complete};
                     resolve(reponse);
                 }
             });
