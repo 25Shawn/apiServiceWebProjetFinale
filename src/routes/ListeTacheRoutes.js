@@ -10,7 +10,7 @@ router.use(logger);
 // affiche la liste des tâches incomplètes
 router.get('/afficherListeTache',authentification, (req, res) => {
 
-    listeTache.afficherListeTacheIncomplete(req, res);
+    listeTache.RequeteafficherListeTacheIncomplete(req, res);
 });
 
 // affiche la liste des tâches complètes
