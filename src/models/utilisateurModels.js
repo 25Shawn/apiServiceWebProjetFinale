@@ -102,7 +102,11 @@ class utilisateur {
                     reject(erreur);
                 } else {
                     const count = (resultat.rows[0].count);
-                    resolve(count === 0);
+                    if (count === 0) {
+                        resolve(false);
+                    } else {
+                        resolve(true);
+                    }
                 }
             });
         });
