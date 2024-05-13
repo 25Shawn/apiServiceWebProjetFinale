@@ -24,7 +24,7 @@ class ListeTachesUsager{
         });
     }
 
-    static async RequeteafficherListeTacheComplete(cleApi) {
+    static async afficherListeTacheComplete(cleApi) {
 
         const utilisateur_id = await ListeTachesUsager.ObtenirIdentifiantUsager(cleApi);
 
@@ -42,7 +42,7 @@ class ListeTachesUsager{
         });
     }
 
-    static async RequeteAfficherDetail(id, cleApi) {
+    static async AfficherDetail(id, cleApi) {
 
         const utilisateur_id = await ListeTachesUsager.ObtenirIdentifiantUsager(cleApi);
 
@@ -64,7 +64,7 @@ class ListeTachesUsager{
         });
     }
 
-    static async RequeteAjouterTache(tache, cleApi) {
+    static async AjouterTache(tache, cleApi) {
 
         const utilisateur_id = await ListeTachesUsager.ObtenirIdentifiantUsager(cleApi);
 
@@ -85,7 +85,7 @@ class ListeTachesUsager{
         });
     }
 
-    static async RequeteModifierTache(tache,cleApi) {
+    static async ModifierTache(tache,cleApi) {
 
         const utilisateur_id = await ListeTachesUsager.ObtenirIdentifiantUsager(cleApi);
 
@@ -106,7 +106,7 @@ class ListeTachesUsager{
         });
     }
 
-    static async RequeteModifierStatusTache(tache,cleApi) {
+    static async ModifierStatusTache(tache,cleApi) {
 
         const utilisateur_id = await ListeTachesUsager.ObtenirIdentifiantUsager(cleApi);
 
@@ -127,7 +127,7 @@ class ListeTachesUsager{
         });
     }
 
-    static async RequeteSupprimerTache(tache,cleApi) {
+    static async SupprimerTache(tache,cleApi) {
 
         const utilisateur_id = await ListeTachesUsager.ObtenirIdentifiantUsager(cleApi);
 
@@ -147,7 +147,7 @@ class ListeTachesUsager{
         });
     }
 
-    static RequeteAjouterSousTache(sousTache) {
+    static AjouterSousTache(sousTache) {
 
         return new Promise((resolve, reject) => {
             let requete = "INSERT INTO sous_taches (tache_id, titre, complete) VALUES ($1, $2, $3) RETURNING tache_id, titre, complete";
@@ -168,7 +168,7 @@ class ListeTachesUsager{
         });
     }
 
-    static RequeteModifierSousTache(sousTache) {
+    static ModifierSousTache(sousTache) {
         return new Promise((resolve, reject) => {
             let requete = "UPDATE sous_taches SET titre = $1 WHERE sous_tache_id = $2 RETURNING titre, sous_tache_id";
             console.log(sousTache);
@@ -184,7 +184,7 @@ class ListeTachesUsager{
         });
     }
 
-    static RequeteModifierStatusSousTache(sousTache) {
+    static ModifierStatusSousTache(sousTache) {
         return new Promise((resolve, reject) => {
             let requete = "UPDATE sous_taches SET complete = $1 WHERE sous_tache_id = $2 RETURNING complete,sous_tache_id";
 
@@ -201,7 +201,7 @@ class ListeTachesUsager{
         });
     }
 
-    static RequeteSupprimerSousTache(sousTache) {
+    static SupprimerSousTache(sousTache) {
         return new Promise((resolve, reject) => {
             let requete = "DELETE FROM sous_taches WHERE sous_tache_id = $1";
 
